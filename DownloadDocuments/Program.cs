@@ -17,10 +17,11 @@ namespace DownloadDocuments
             {
                 using (ClientContext context = SPHelper.GetClientContext(FromAppSettings.SPSiteURL, FromAppSettings.SPIsSiteOnPremise))
                 {
-                    //ExcelDownloadDocuments.CreateExcelAndDownloadDocuments(context);
-                    string folderName = DateTime.Now.ToString("ddMMyyyy_hh_mm");
-                    string filePath = @"C:\Users\IJ\Documents\Sample docs\Lorem Ipsum.docx";
-                    SPDocuments.UploadDocuments(context, FromAppSettings.SPDocLibTitle, folderName, filePath);
+                    ExcelDownloadDocuments.CreateExcelAndDownloadDocuments(context);
+                    //string folderName = DateTime.Now.ToString("ddMMyyyy_hh_mm");
+                    //string filePath = @"C:\Users\IJ\Documents\Sample docs\Lorem Ipsum.docx";
+                    //SPDocuments.UploadDocuments(context, FromAppSettings.SPDocLibTitle, folderName, filePath);
+                    //SPLists.ListItemBreakInheritance(context, "Epsium", 1);
                 }
             }
             catch (Exception ex)

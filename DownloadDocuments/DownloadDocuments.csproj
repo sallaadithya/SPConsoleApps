@@ -284,8 +284,10 @@
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\SPDocLibHelper.cs" />
     <Compile Include="Helpers\SPHelper.cs" />
+    <Compile Include="Helpers\SPRoleDefinitions.cs" />
     <Compile Include="Operations\ExcelDownloadDocuments.cs" />
     <Compile Include="Operations\SPDocuments.cs" />
+    <Compile Include="Operations\SPLists.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

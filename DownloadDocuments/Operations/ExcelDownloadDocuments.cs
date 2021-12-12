@@ -45,11 +45,18 @@ namespace DownloadDocuments.Operations
             {
                 List<string> excelRows = new List<string>();
 
+                string firstFileName = string.Empty;
+
                 FileCollection spFiles = SPDocLibHelper.GetFolderFiles(context, spFolder);
                 foreach (File spFile in spFiles)
                 {
+                    if (string.IsNullOrWhiteSpace(firstFileName))
+                    {
+                        firstFileName = spFile.Name.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    }
+
                     System.IO.Stream fileStream = SPDocLibHelper.GetFileStrean(context, spFile);
-                    string fileFullPath = GetFilePath(spFolder, spFile);
+                    string fileFullPath = GetFilePath(spFolder, firstFileName, spFile);
                     string filePath = Helper.SaveFile(fileFullPath, fileStream);
 
                     ListItem listItem = SPDocLibHelper.GetFileListItem(context, spFile);
@@ -77,13 +84,20 @@ namespace DownloadDocuments.Operations
             return true;
         }
 
-        private static string GetFilePath(Folder spFolder, File spFile)
+        private static string GetFilePath(Folder spFolder, string firstFileName, File spFile)
         {
             string urlPath = string.Empty;
             string[] folderUrl = spFolder.ServerRelativeUrl.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < folderUrl.Length; i++)
             {
-                urlPath += i == 0 ? "\\" : $"{folderUrl[i]}\\";
+                if (i == folderUrl.Length - 1)
+                {
+                    urlPath += i == 0 ? "\\" : $"{firstFileName}_{folderUrl[i]}\\";
+                }
+                else
+                {
+                    urlPath += i == 0 ? "\\" : $"{folderUrl[i]}\\";
+                }
             }
 
             string fileFullPath = $"{FromAppSettings.SaveFolderPath}{urlPath}{spFile.Name}";
