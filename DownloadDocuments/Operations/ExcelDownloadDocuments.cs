@@ -67,7 +67,10 @@ namespace DownloadDocuments.Operations
                     excelRow.Add(filePath);
                     foreach (KeyValuePair<string, string> excelFieldName in FromAppSettings.SPExcelFieldNames)
                     {
-                        excelRow.Add(Convert.ToString(listItem.FieldValues[excelFieldName.Key]));
+                        string fieldValue = GetFieldValue(listItem.FieldValues[excelFieldName.Key]);
+                        excelRow.Add(fieldValue);
+
+                        //excelRow.Add(Convert.ToString(listItem.FieldValues[excelFieldName.Key]));
                     }
 
                     excelRows.Add(string.Join(",", excelRow) + Environment.NewLine);
@@ -82,6 +85,29 @@ namespace DownloadDocuments.Operations
             }
 
             return true;
+        }
+
+        private static string GetFieldValue(object value)
+        {
+            string retValue = string.Empty;
+
+            if (value != null)
+            {
+                string type = value.GetType().Name;
+                switch (type)
+                {
+                    case "FieldUserValue":
+                        var fieldUser = (FieldUserValue)value;
+                        retValue = fieldUser.LookupValue;
+                        break;
+                    default:
+                        retValue = Convert.ToString(value);
+                        break;
+                }
+            }
+
+            return retValue;
+
         }
 
         private static string GetFilePath(Folder spFolder, string firstFileName, File spFile)
